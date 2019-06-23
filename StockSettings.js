@@ -15,6 +15,15 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 5,
     },
+    stock: {
+        flexDirection: 'row',
+    },
+    header: {
+        fontSize: 18,
+        paddingTop: 20,
+        paddingBottom: 20,
+        justifyContent: 'center',
+    },
 });
 
 async function stockConfig(param) {
@@ -77,10 +86,10 @@ export default function StockSettings({navigation, param, label}) {
     }
 
     return (<View>
-        <Text>{label}</Text>
-        {stocks.map((stock, idx)=> (<View key={idx}>
+        <Text style={styles.header}>{label}</Text>
+        {stocks.map((stock, idx)=> (<View key={idx} style={styles.stock} >
             <Text>{stock.symbol} -- {stock.shares} -- {stock.buyPrice}</Text>
-            <Text onPress={()=> removeStock(param, stock.symbol).then(onLoad)} >X</Text>
+            <Text onPress={()=> removeStock(param, stock.symbol).then(onLoad)} > Remove</Text>
         </View>))}
         
         <Button title="Add" onPress={push} />
