@@ -6,3 +6,8 @@ export function format(n, f) {
         maximumFractionDigits: f || 0,
     });
 }
+
+export function formatCurrency(currency, n, f) {
+    const symbol = {UAH: '₴', USD: '$', EUR: '€'}[currency] || currency;
+    return `${format(n, f)}${symbol}`;
+}

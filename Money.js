@@ -11,7 +11,7 @@ import STOCK from './links/stock';
 import Privat from './links/privat';
 import NBU from './links/nbu';
 
-import {format} from './format';
+import {format, formatCurrency} from './format';
 
 
 function line(pieces) {
@@ -20,11 +20,11 @@ function line(pieces) {
         .join(' | ');
 }
 
-function total(bits, stock, banks, fx) {
+function total(stock, banks, fx) {
     return (util.sum(
         Object.keys(banks)
             .map((currency)=> banks[currency] * (fx[currency] || 1))
-    ) + (bits * fx.USD) + (stock * fx.USD)) / fx.USD;
+    ) + (stock * fx.USD)) / fx.USD || 0;
 }
 
 const styles = StyleSheet.create({
@@ -46,14 +46,12 @@ export default function Money() {
         Bit, STOCK, Privat, FIO
     );
     const banks = util.combine([fio, privat]);
-    const stockPrice = util.combineStock(stock);
-    const bitsPrice = util.combineStock(bits);
-
+    const stockPrice = util.combineStock([...(stock||[]), ...(bits||[])]);
 
     return <View style={styles.container} onPress={onPress} >
 
         <Text onPress={onPress} style={styles.total} >
-            {format(total(bitsPrice, stockPrice, banks, {USD: uahUSD, EUR: uahEUR}))}$
+            {format(total(stockPrice, banks, {USD: uahUSD, EUR: uahEUR}))}$
         </Text>
 
         {loading && <Text>Loading...</Text>}
@@ -64,17 +62,11 @@ export default function Money() {
             ])}
         </Text>
         <Text onPress={onPress} >
-            {line([
-                banks.UAH && `${format(banks.UAH)}₴`,
-                banks.USD && `${format(banks.USD)}$`,
-                banks.EUR && `${format(banks.EUR)}€`,
-            ])}
-        </Text>
-        <Text onPress={onPress} >
-            {line([
-                stockPrice && `S: ${format(stockPrice)}`,
-                bitsPrice && `B: ${format(bitsPrice)}`,
-            ])}
+            {line(
+                Object.entries(banks).map(([currency, balance])=> 
+                    balance && formatCurrency(currency, balance)
+                )
+            )}
         </Text>
 
         <Stock stocks={stock} onPress={onPress} />
