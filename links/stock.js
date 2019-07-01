@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 import * as util from '../util';
 
 function request(symbols) {
-    return fetch(`https://api.iextrading.com/1.0/stock/market/ohlc?symbols=${symbols.join(',')}`);
+    return fetch(`https://api.iextrading.com/1.0/tops?symbols=${symbols.join(',')}`);
 }
 
 function avg(min, max) {
@@ -10,7 +10,7 @@ function avg(min, max) {
 }
 
 function parse([response, {symbol, shares, buyPrice}]) {
-    const price = avg(response.low, response.high);
+    const price = response.lastSalePrice;
     return {symbol, price, shares, buyPrice};
 }
 
