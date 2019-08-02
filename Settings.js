@@ -31,6 +31,7 @@ export default function Settings({navigation}) {
         fio: '',
         privat_id: '',
         privat_token: '',
+        iex_token: '',
     });
     useEffect(()=> {
         AsyncStorage.multiGet(Object.keys(value))
@@ -62,6 +63,10 @@ export default function Settings({navigation}) {
         <View>
             <Text>Privat token</Text>
             <TextInput value={value['privat_token']} onChangeText={change.bind(null, 'privat_token')} onSubmitEditing={submit} style={styles.input} />
+        </View>
+        <View>
+            <Text>IEX token</Text>
+            <TextInput value={value['iex_token']} onChangeText={change.bind(null, 'iex_token')} onSubmitEditing={submit} style={styles.input} />
         </View>
 
         <StockSettings navigation={navigation} label="Stocks" param="stocks" />
