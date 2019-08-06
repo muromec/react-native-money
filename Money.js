@@ -24,7 +24,7 @@ function total(stock, banks, fx) {
     return (util.sum(
         Object.keys(banks)
             .map((currency)=> banks[currency] * (fx[currency] || 1))
-    ) + (stock * fx.USD)) / fx.USD || 0;
+    ) + (stock * fx.USD)) / fx.EUR || 0;
 }
 
 const styles = StyleSheet.create({
@@ -51,7 +51,7 @@ export default function Money() {
     return <View style={styles.container} onPress={onPress} >
 
         <Text onPress={onPress} style={styles.total} >
-            {format(total(stockPrice, banks, {USD: uahUSD, EUR: uahEUR}))}$
+            {format(total(stockPrice, banks, {USD: uahUSD, EUR: uahEUR}))}€
         </Text>
 
         {loading && <Text>Loading...</Text>}
