@@ -37,7 +37,7 @@ async function addStock(param, value) {
 }
 
 async function removeStock(param, symbol) {
-    const items = await stockConfig();
+    const items = await stockConfig(param);
     const filtered = items.filter((stock)=> stock.symbol !== symbol);
     await AsyncStorage.setItem(param, JSON.stringify(filtered));
 }
